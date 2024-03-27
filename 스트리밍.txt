@@ -1,0 +1,29 @@
+#스트리밍 서비스를 구현한다.
+#서버는 웹 캠을 통한 송출자
+#클라이언트는 방에 입장한다.
+#클라이언트는 GUI를 생성해서 방에 입장한 것 처럼 구현한다.
+#GUI의 상단에는 서버로부터 받는 영상을 재생한다.
+#GUI하단에는 2가지 이상의 필터 버튼이 있다. 버튼을 누르면 상단 웹캠화면에 필터가 적용되어 나온다.
+	1. 형상 변환 필터 2. 색상 변환 필터 3. 원본으로 돌리기 버튼
+numpy로 만들어야함.
+1) 사람제외 블러처리
+2) 늘리기
+
+#TKINTER GUI에서 영상의 프레임을 가져오기 위해 PIL (pillow)라이브러리를 사용해야한다.
+#영상은 TKINTER의 CANVAS컨트롤을 통해 표현한다.
+#TKINTER를 class구조로 만든다.
+
+#thread
+#queue
+#protocol
+#server-client
+#socket
+#TCP
+#tkinter
+#PIL
+#numpy
+#openCV
+
+#PYTHON , C#, HTML, JS, CSS, C, pycham, vs code, vs studio, aduino, avr, Matplot, 신경망, R-CNN, 
+
+
