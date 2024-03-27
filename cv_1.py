@@ -70,25 +70,25 @@ import cv2
 # cv2.waitKey()
 
 
-#복사의 종류
-lista = []
-listb = [1,2,3,4]
-listc = [1]
-
-listc.append(listb)
-print(listc)
-
-listc = listc+listb
-print(listc)
-listc = [1,2,3]
-print(listc)
-
-def changeList(list_x):
-    temp = list_x
-    list_x.append(10)
-    print("temp",temp)
-    print("list_x",list_x)
-changeList(listc)
+# #복사의 종류
+# lista = []
+# listb = [1,2,3,4]
+# listc = [1]
+#
+# listc.append(listb)
+# print(listc)
+#
+# listc = listc+listb
+# print(listc)
+# listc = [1,2,3]
+# print(listc)
+#
+# def changeList(list_x):
+#     temp = list_x
+#     list_x.append(10)
+#     print("temp",temp)
+#     print("list_x",list_x)
+# changeList(listc)
 
 
 #깊은 복사 vs 얕은 복사
@@ -213,14 +213,14 @@ changeList(listc)
 # cv2.waitKey()
 # cv2.destroyAllWindows()
 
-src=cv2.imread('dog.jpg',cv2.IMREAD_COLOR)
-dst = cv2.blur(src,(5,5), anchor=(-1,-1), borderType = cv2.BORDER_DEFAULT)
-gray = cv2.cvtColor(dst,cv2.COLOR_BGRA2GRAY)
-ret,dst2 = cv2.threshold(gray,167,255,cv2.THRESH_BINARY)
-cv2.imshow('dst',dst2)
-cv2.imshow('src',src)
-cv2.waitKey()
-cv2.destroyAllWindows()
+# src=cv2.imread('dog.jpg',cv2.IMREAD_COLOR)
+# dst = cv2.blur(src,(5,5), anchor=(-1,-1), borderType = cv2.BORDER_DEFAULT)
+# gray = cv2.cvtColor(dst,cv2.COLOR_BGRA2GRAY)
+# ret,dst2 = cv2.threshold(gray,167,255,cv2.THRESH_BINARY)
+# cv2.imshow('dst',dst2)
+# cv2.imshow('src',src)
+# cv2.waitKey()
+# cv2.destroyAllWindows()
 
 #커널은 이미지에서 특정 픽셀 spot(x,y)의 주변 일정 범위 박스 공간
 #신호처리 분야에서 커널은 필터라고 부름
@@ -230,3 +230,119 @@ cv2.destroyAllWindows()
 #컨벌루션 : 새로운 픽셀을 만들어 낼 때 커널 크기의 화소 값을 이용해서 어떤 시스템(함수)를 통과시켜
 #계산하는 행위를 의미
 #커널 내 고정점은 하나의 포인트이다.
+
+
+# #Border Extrapolation
+# #테두리 외삽법 : flags -> 속성명
+#
+# #컨벌루션 적용시 이미지의 가장자리 (테두리) 처리 방식
+# #컨벌루션 적용하면 이미지 가장자리 부분은 계산이 불가, 이 문제를
+# #해결하기 위해 테두리의 이미지 바깥쪽에 가상의 픽셀 처리하는 방법
+# #가상 픽셀 값을 0 혹은 임의 값으로 할당하거나, 커널이 연산할 수 있는
+# #부분부터 연산을 수행한다.
+#
+# src = cv2.imread("dog.jpg", cv2.IMREAD_COLOR)
+# gray = cv2.cvtColor(src,cv2.COLOR_BGRA2GRAY)
+#
+# sobel = cv2.Sobel(gray,cv2.CV_8U,1,0,3)
+# #매개변수 설명
+# #원본이미지 gray
+# #depth : 출력 이미지의 정밀도 cv2.CV_8U
+# #dx : x방향 미분
+# #dy : y방향 미분, dst:커널 사이즈
+# #소벨마스크를 이용해서 경계선 검출을 할 수 있음.
+# #미분값을 이용한 경계선 검출 방식이며, 주변 픽셀들과ㅢ
+# #기울기(미분)차이를 통해 경계선을 검출
+# #사용 커널의 최대값은 31, 홀수만 가능
+# #X미분 차수와 Y미분 차수 합은 1이상이어야 함.
+# #0값은 해당 축으로 미분하지 않음 의미
+#
+# laplacian=cv2.Laplacian(gray,cv2.CV_8U,ksize=3)
+# #라프라시안 필터는 2차 미분 형태로 가장자리가 밝은 부분에서 발생한 것인지,
+# #어두운 부분에서 발생한 것인지 알 수 있음
+# #매개변수 설명
+# #src : gray로 설정 gray스케일 적용된 이미지를 소스 이미지로 넣음
+# #정밀도 cv2.CV_8U
+# #커널 사이즈 : 3
+# #커널의 크기는 라플라시안 필터의 크기 설정
+# #그 외 매개변수 비율, 오프셋 사용 가능
+# #비율과 오프셋은 출력이미지 반환 전 적용된다.
+#
+# canny = cv2.Canny(src,100,255)
+# #캐니 엣지 함수
+# #소벨,라플라시안과 마찬가지로 테두리를 얻어낼 수 있는 대표적인 함수
+# #노이즈에 민감하지 않고 성능이 좋은 편이라 많이 사용
+# #매개변수
+# #100:하위임계값, 255 : 상위임계값
+# #임계값 설정으로 미분한 결과 극대값을 가지는 지점을 가장자리(엣지)라인으로 지정함.
+# #픽셀이 상위 임계값보다 큰기울기를 가지면 픽셀을 가장자리로 간주함.
+# #픽셀이 임계값보다 낮은 경우 가장자리로 고려하지 않음.
+#
+# cv2.imshow('sobelMask',sobel)
+# cv2.imshow("lap",laplacian)
+# cv2.imshow("cannyFilter",canny)
+# cv2.waitKey()
+
+
+# #윤곽선 contours 컨투어 라인
+#
+# src = cv2.imread("dog.jpg",cv2.IMREAD_COLOR)
+# gray = cv2.cvtColor(src,cv2.COLOR_BGRA2GRAY)
+# ret,binary = cv2.threshold(gray, 190,255,cv2.THRESH_BINARY)
+# binary = cv2.bitwise_not(binary) # 배경색이랑 강아지색이랑 반대로 나오게 만들어줌.
+# # bitwise_not : 윤곽선 감출 object는 하얀색 객체 검출, 배경 검정 오브젝트 흰색을 반전시키는 함수
+# contours,hierarchy = cv2.findContours(binary,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE)
+# #컨투어, 하이어라키
+# #컨투어 외곽선
+# #하이어라키 계층
+# #findCountours 리턴으로 컨투어와 하이어라키 얻을 수 있음
+# #윤곽선은 numpy구조 배열로 검출된 윤곽선 포인트들이 담겨 있음.
+# #계층 구조는 윤곽선의 계층 구조
+#
+# for i in range(len(contours)):
+#     cv2.drawContours(src,[contours[i]], 0, (0,0,255),2)
+#     #numpy 반환받은 윤곽선 배열을 그려주는 함수 : src원본이미지에 컨투어를 그리겠다.
+#     #윤곽선 인덱스는 검출된 윤곽선 배열에서 몇 번째 인덱스의 윤곽선을 그릴지 의미
+#     #위 예에서 윤곽선컨투어 인덱스를 0으로 설정했는데, 0으로 사용하는 경우 0번째 인덱스의 윤곽선을 그림
+#     #-1로 동일한 의미를 가짐
+#     print(contours[i])
+#     print(i,hierarchy[0][i])
+#     cv2.imshow('src',src)
+# cv2.imshow('b',binary)
+# cv2.waitKey()
+#
+
+#검색방법 flags
+#cv2.RETR_EXTERNAL 외각 윤관만 검출, 계층 구성 X
+#cv2.RETR_LIST : 모든 윤곽 검출, 계층 구성 X
+#cv2.RETR_CCOMP : 모든 윤곽 검출, 2단계 계층 구성
+#cv2.RETR_TREE : 모든 윤곽 검출, 계층 구조 모두 형성 (트리구조)
+
+#cv2.CHAIN_APPROX_NONE : 윤곽 모든 점 반환
+#cv2.CHAIN_APPROX_SIMPLE : 윤곽점 단순화 반환
+
+
+#threshold 중 adaptive threshold가 있다.
+#이진화 방법 임계 처리 threshold의 적응형 이진화 방법
+#어댑티드 쓰래시홀드
+#적응형 이진화는 입력 이미지에 따라 임계값이 함수 내부적으로 스스로 다른 임께값을 할당
+#이미지에 따라 어떤 임계값을 주더라도 이진화가 어려운 이미지에 어댑티브 스래시홀드를 사용하는 경우가 많음
+#에제로 사용한 강아지 이미지처럼 배경과 사물의 경계가 확실히 구분되어 있는 경우는 일반 threshold 사용
+#이미지 내 객체에 과한 조명, 기타 노이즈 , 반사 등으로 인해 밝기 분포 차이가 큰 경우 국소적으로 임계값을
+#적용하고자 하는 경우에 사용한다.
+
+src = cv2.imread('apple.jpg')
+gray = cv2.cvtColor(src,cv2.COLOR_BGRA2GRAY)
+binary = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 467,17)
+#적응형 이진화 함수로 gray스케일 이미지를 binary 이진화 한다.
+#매개변수 : 입력 이비지, 최대값, 적응형 이진화 플래그, 임계값플래그, 블록크기, 감산값
+#최대값과 임계값의 형식은 기존 이진화 함수와 동일한 역할
+#적응형 이진화 플래그는 클록 크기 내의 연산방법을 의미하는 플래그 MEAN : 평균 연산 방식
+
+#적응형 이진화 플래그
+#cv2.ADAPTIVE_THRESH_MEAN_C : 주변 픽셀 평균값으로 계산하는 방식
+#cv2.ADAPTIVE_THRESH_GAUSSIAN_C도 사용가능 : 주변 픽셀의 가중치 평균값으로 계산하는 방식
+#blocksize 임계값 계산시 사용하는 블록 크기로 홀수만 사용, 주변 픽셀 영역 크기
+#C : 계산된 평균에서 빼는 상수 : 보정값
+cv2.imshow('bbbb',binary)
+cv2.waitKey()
