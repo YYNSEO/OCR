@@ -48,10 +48,17 @@ server_socket = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) #reuseaddr는 1로 걸리게??
 server_socket.bind((HOST, PORT))
 server_socket.listen() # client가 server에 접속되었는지 확인하는 것
+
+
+def clear_queue(queue):
+    while not queue.empty():
+        queue.get()
+
 print('server start')
 start_new_thread(webcam, (enclosure_queue,)) #웹 캠 먼저 키고
 while True:
     print('wait')
     client_socket, addr = server_socket.accept() # thread를 켜서 받아준다.
+    clear_queue(enclosure_queue)
     start_new_thread(threaded,(client_socket,addr, enclosure_queue,))
 server_socket.close()
